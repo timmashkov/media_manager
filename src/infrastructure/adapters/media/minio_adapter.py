@@ -49,7 +49,7 @@ class MinioFileAdapter(FileAdapterInterface):
     ) -> str:
         self.logger.debug("Download file %s to bucket %s...", object_name, bucket_name)
         length = kwargs.pop("length", -1)
-        kwargs["part_size"] = settings.MINIO.ERRORS.MIN_PART_SIZE if length == -1 else 0
+        kwargs["part_size"] = 5 * 1024 * 1024 if length == -1 else 0
         minio_tags = Tags(for_object=True)
         if tags := kwargs.pop("tags", {}):
             minio_tags.update(**tags)

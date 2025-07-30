@@ -66,16 +66,16 @@ class BaseRouter:
         ):
             return await service_instance.get_items(filters=filters)
 
-        @self.api_router.post(
-            "/",
-            response_model=_output_model,
-            name=f"create_{self.prefix[1:]}",
-            operation_id=f"create_{self.prefix[1:]}",
-        )
-        async def create_object(
-            data: _input_model, service_instance: _service_instance = Depends()
-        ):
-            return await service_instance.create_item(data)
+        # @self.api_router.post(
+        #     "/",
+        #     response_model=_output_model,
+        #     name=f"create_{self.prefix[1:]}",
+        #     operation_id=f"create_{self.prefix[1:]}",
+        # )
+        # async def create_object(
+        #     data: _input_model, service_instance: _service_instance = Depends()
+        # ):
+        #     return await service_instance.create_item(data)
 
         @self.api_router.patch(
             "/{uuid}",
