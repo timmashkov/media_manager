@@ -25,4 +25,4 @@ class FileRouter(BaseRouter):
             data: UploadFile | None = File(...),
             use_case=Depends(Container.file_service),
         ):
-            return await use_case.create_item(data=file_in, file=data.file)
+            return await use_case.create_item(data=file_in, file=data)
