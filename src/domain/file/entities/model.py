@@ -9,9 +9,13 @@ from infrastructure.common.base_entities.patched_filter import PatchedFilter
 from infrastructure.database.models import File
 
 
-class FileIncomingData(pydantic.BaseModel):
+class FileBaseData(pydantic.BaseModel):
 
+    bucket: str = pydantic.Field(description=File.bucket.comment)
     name: str = pydantic.Field(description=File.name.comment)
+
+class FileIncomingData(FileBaseData):
+
     path: str = pydantic.Field(description=File.path.comment)
     tags: dict | None = pydantic.Field(default_factory=dict)
     jdata: dict | None = pydantic.Field(default_factory=dict)
@@ -21,7 +25,7 @@ class FileIncomingData(pydantic.BaseModel):
     reference_uuid: UUID | None = pydantic.Field(
         default=None, description=File.reference_uuid.comment
     )
-    bucket: str = pydantic.Field(description=File.bucket.comment)
+
     mimetype: str = pydantic.Field(description=File.mimetype.comment)
 
     @classmethod

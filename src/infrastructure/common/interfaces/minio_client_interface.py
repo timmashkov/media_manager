@@ -31,12 +31,12 @@ class FileAdapterInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
-    async def download_file_chunk(
+    def download_file_chunk(
         self,
         bucket_name: str,
         object_name: str,
         **kwargs: typing.Any,
-    ) -> typing.AsyncGenerator[bytes, None]:
+    ) -> typing.AsyncIterable[bytes]:
         pass
 
     async def delete_object(

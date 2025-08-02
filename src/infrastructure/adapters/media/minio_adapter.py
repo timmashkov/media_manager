@@ -3,6 +3,7 @@ import typing
 
 import miniopy_async
 import tenacity
+from aiohttp import ClientResponse
 from miniopy_async.commonconfig import Tags
 from urllib3 import BaseHTTPResponse
 
@@ -79,7 +80,7 @@ class MinioFileAdapter(FileAdapterInterface):
 
     async def download_file_raw(
         self, bucket_name: str, object_name: str, **kwargs: typing.Any
-    ) -> BaseHTTPResponse:
+    ) -> ClientResponse:
         self.logger.debug("Download file %s to bucket %s...", object_name, bucket_name)
         try:
             response = await self.client.get_object(
@@ -104,29 +105,27 @@ class MinioFileAdapter(FileAdapterInterface):
             response = await self.download_file_raw(
                 bucket_name=bucket_name, object_name=object_name, **kwargs
             )
-            return response.data
+            return await response.read()
         finally:
             if response:
                 response.close()
-                response.release_conn()
 
     async def download_file_chunk(
         self,
         bucket_name: str,
         object_name: str,
         **kwargs: typing.Any,
-    ) -> typing.AsyncGenerator[bytes, None]:
+    ) -> typing.AsyncIterable[bytes]:
         response = None
         try:
             response = await self.download_file_raw(
                 bucket_name=bucket_name, object_name=object_name, **kwargs
             )
-            for chunk in response.stream(self.chunk_size):
+            async for chunk in response.content.iter_chunked(self.chunk_size):
                 yield chunk
         finally:
             if response:
-                response.close()
-                response.release_conn()
+                await response.release()
 
     async def delete_object(
         self, bucket_name: str, object_name: str, **kwargs: typing.Any

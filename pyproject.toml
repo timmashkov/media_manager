@@ -1,6 +1,6 @@
 [project]
 name = "media-manager-service"
-version = "0.0.4"
+version = "0.1.0"
 description = "Media manager service"
 authors = [
     {name = "timmashkov",email = "bodomizer@yandex.ru"}

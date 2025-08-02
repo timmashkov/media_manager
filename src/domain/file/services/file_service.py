@@ -68,7 +68,7 @@ class FileService:
             file=file, model_extension=income_data.mimetype
         )
         valid_path = self._build_valid_path(
-            path=income_data.path, name=income_data.name, extension=valid_extension
+            path=income_data.bucket, name=income_data.name, extension=valid_extension
         )
         valid_name = self._build_valid_name(
             name=income_data.name, extension=valid_extension

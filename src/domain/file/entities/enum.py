@@ -4,6 +4,7 @@ from enum import Enum
 class ContentType(Enum):
 
     JPEG = "image/jpeg"
+    JPG = "image/jpg"
     PNG = "image/png"
     GIF = "image/gif"
     WEBP = "image/webp"
